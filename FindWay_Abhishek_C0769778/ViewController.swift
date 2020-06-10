@@ -12,6 +12,9 @@ import MapKit
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var btnZoomIn: UIButton!
+    @IBOutlet weak var btnZoomOut: UIButton!
+    @IBOutlet weak var btnFindMyWay: UIButton!
     var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
@@ -66,6 +69,24 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             annotation.title = "Destination"
             annotation.subtitle = "Destination"
             self.mapView.addAnnotation(annotation)
+        }
+    
+    //Zoom in feature
+        @IBAction func zoomIn(_ sender: Any)
+        {
+            var region: MKCoordinateRegion = mapView.region
+            region.span.latitudeDelta /= 2.0
+            region.span.longitudeDelta /= 2.0
+            mapView.setRegion(region, animated: true)
+        }
+    
+    //Zoom out feature
+        @IBAction func zoomOut(_ sender: Any)
+        {
+            var region: MKCoordinateRegion = mapView.region
+            region.span.latitudeDelta = min(region.span.latitudeDelta * 2.0, 180.0)
+            region.span.longitudeDelta = min(region.span.longitudeDelta * 2.0, 180.0)
+            mapView.setRegion(region, animated: true)
         }
 }
 

@@ -18,6 +18,38 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="fyg-wX-gM8">
                                 <rect key="frame" x="0.0" y="92" width="414" height="770"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6g-43-QcK">
+                                <rect key="frame" x="370.5" y="818.5" width="25.5" height="23.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <state key="normal" image="location.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                </state>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="uuh-Xk-phu">
+                                <rect key="frame" x="22" y="820" width="57.5" height="22"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Urz-xO-c9F">
+                                        <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
+                                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="minus" catalog="system">
+                                            <color key="titleShadowColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="zoomOut:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JyU-G2-irG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5r-mw-EHr">
+                                        <rect key="frame" x="36" y="0.0" width="21.5" height="22"/>
+                                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="plus" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="zoomIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MJF-C0-0Jx"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FIND MY WAY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KZO-XZ-zHy">
                                 <rect key="frame" x="4" y="62" width="406" height="26"/>
                                 <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -30,16 +62,23 @@
                         <constraints>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6u4-cP-RQB"/>
                             <constraint firstItem="KZO-XZ-zHy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="4" id="AAb-D1-bxg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uuh-Xk-phu" secondAttribute="bottom" constant="20" id="GFa-4U-3yD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="J6g-43-QcK" secondAttribute="bottom" constant="20" id="GwJ-Xd-kUd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KZO-XZ-zHy" secondAttribute="trailing" constant="4" id="Hvg-XD-2QQ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fyg-wX-gM8" secondAttribute="bottom" id="Ny4-Ny-cKT"/>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="top" secondItem="KZO-XZ-zHy" secondAttribute="bottom" constant="4" id="WWf-9L-g9i"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fyg-wX-gM8" secondAttribute="trailing" id="cVg-Ta-Rht"/>
                             <constraint firstItem="KZO-XZ-zHy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="18" id="oMh-cu-gCA"/>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="48" id="uHC-sM-Mo1"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uuh-Xk-phu" secondAttribute="bottom" constant="20" id="z9U-7m-Rbr"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="J6g-43-QcK" secondAttribute="trailing" constant="18" id="zQ9-c5-sNY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="btnFindMyWay" destination="J6g-43-QcK" id="mwb-nC-6ay"/>
+                        <outlet property="btnZoomIn" destination="q5r-mw-EHr" id="N8C-ht-Csc"/>
+                        <outlet property="btnZoomOut" destination="Urz-xO-c9F" id="Wo9-Wn-UDZ"/>
                         <outlet property="mapView" destination="fyg-wX-gM8" id="Ncg-sH-c6m"/>
                     </connections>
                 </viewController>
@@ -48,4 +87,9 @@
             <point key="canvasLocation" x="132" y="120"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="location.fill" catalog="system" width="64" height="56"/>
+        <image name="minus" catalog="system" width="64" height="12"/>
+        <image name="plus" catalog="system" width="64" height="56"/>
+    </resources>
 </document>
