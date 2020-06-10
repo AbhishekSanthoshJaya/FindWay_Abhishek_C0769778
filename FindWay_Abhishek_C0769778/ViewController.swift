@@ -27,12 +27,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.startUpdatingLocation()
         
         
-        //Zooming to user location
-        if let userLocation = locationManager.location?.coordinate
-        {
-            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 200, longitudinalMeters: 200)
-            mapView.setRegion(viewRegion, animated: false)
-        }
         mapView.showsUserLocation = true
         
         //Gesture to add marker
@@ -40,6 +34,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.addGestureRecognizer(longTapGesture)
         
   }
+    
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
+        {
+            let location = locations.first!
+            let coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters:1000)
+            mapView.setRegion(coordinateRegion, animated: true)
+            locationManager.stopUpdatingLocation()
+        }
+    
         @objc func longTap(sender: UIGestureRecognizer)
         {
         // Annotation at long press location
