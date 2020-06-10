@@ -16,6 +16,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var btnZoomOut: UIButton!
     @IBOutlet weak var btnFindMyWay: UIButton!
     var locationManager = CLLocationManager()
+    var aLat: CLLocationDegrees??
+    var aLon: CLLocationDegrees??
+    var location: CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +43,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
         {
-            let location = locations.first!
-            let coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters:1000)
+            location = locations.first!
+         let coordinateRegion = MKCoordinateRegion(center: location!.coordinate, latitudinalMeters: 1000, longitudinalMeters:1000)
             mapView.setRegion(coordinateRegion, animated: true)
             locationManager.stopUpdatingLocation()
         }
@@ -66,10 +69,38 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             //Adding new annotation
             let annotation = MKPointAnnotation()
             annotation.coordinate = location
+            aLat = annotation.coordinate.latitude
+            aLon = annotation.coordinate.longitude
             annotation.title = "Destination"
             annotation.subtitle = "Destination"
             self.mapView.addAnnotation(annotation)
         }
+    
+    @IBAction func findMyWay(_ sender: Any) {
+        
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!), addressDictionary: nil))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees), addressDictionary: nil))
+        request.requestsAlternateRoutes = true
+        request.transportType = .automobile
+
+        let directions = MKDirections(request: request)
+
+        directions.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
+
+            for route in unwrappedResponse.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+        renderer.strokeColor = UIColor.blue
+        return renderer
+    }
     
     //Zoom in feature
         @IBAction func zoomIn(_ sender: Any)
@@ -88,5 +119,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             region.span.longitudeDelta = min(region.span.longitudeDelta * 2.0, 180.0)
             mapView.setRegion(region, animated: true)
         }
+    
+    
 }
 
