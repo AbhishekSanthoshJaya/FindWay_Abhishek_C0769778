@@ -77,7 +77,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     
     @IBAction func findMyWay(_ sender: Any) {
-        
+        self.mapView.removeOverlays(self.mapView.overlays)
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!), addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees), addressDictionary: nil))
