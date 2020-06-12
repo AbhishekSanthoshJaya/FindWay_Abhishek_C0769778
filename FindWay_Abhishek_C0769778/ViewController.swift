@@ -104,7 +104,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         else
         {
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees), addressDictionary: nil))
-        request.requestsAlternateRoutes = true
+        request.requestsAlternateRoutes = false
         }
         switch segmentType.selectedSegmentIndex
         {
