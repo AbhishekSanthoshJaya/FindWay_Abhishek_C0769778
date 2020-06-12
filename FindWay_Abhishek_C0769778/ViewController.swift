@@ -36,10 +36,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         
         mapView.showsUserLocation = true
+        mapView.isZoomEnabled = false
         
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        tap.numberOfTapsRequired = 2
+        mapView.addGestureRecognizer(tap)
         //Gesture to add marker
-        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
-        mapView.addGestureRecognizer(longTapGesture)
+//        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
+//        mapView.addGestureRecognizer(longTapGesture)
         
   }
     
@@ -51,15 +56,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             locationManager.stopUpdatingLocation()
         }
     
-        @objc func longTap(sender: UIGestureRecognizer)
+        @objc func doubleTapped(sender: UIGestureRecognizer)
         {
-        // Annotation at long press location
-            if sender.state == .began
-            {
+//        // Annotation at long press location
+//            if sender.state == .began
+//            {
                 let locationInView = sender.location(in: mapView)
                 let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
                 addAnnotation(location: locationOnMap)
-            }
+//            }
         }
 
         func addAnnotation(location: CLLocationCoordinate2D)

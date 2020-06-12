@@ -19,7 +19,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="770"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6g-43-QcK">
-                                <rect key="frame" x="370.5" y="820" width="25.5" height="22"/>
+                                <rect key="frame" x="370.5" y="818.5" width="25.5" height="23.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <state key="normal" image="location.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -65,7 +65,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="y12-vY-qnb">
-                                <rect key="frame" x="139.5" y="815.5" width="135" height="32"/>
+                                <rect key="frame" x="139.5" y="815" width="135" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Bpl-un-QDT"/>
                                     <constraint firstAttribute="width" constant="135" id="qdz-OW-btk"/>
@@ -91,7 +91,6 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uuh-Xk-phu" secondAttribute="bottom" constant="20" id="SNw-IG-x3l"/>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="top" secondItem="KZO-XZ-zHy" secondAttribute="bottom" constant="4" id="WWf-9L-g9i"/>
                             <constraint firstItem="y12-vY-qnb" firstAttribute="firstBaseline" secondItem="J6g-43-QcK" secondAttribute="baseline" id="aLj-T7-d1n"/>
-                            <constraint firstItem="y12-vY-qnb" firstAttribute="centerY" secondItem="uuh-Xk-phu" secondAttribute="centerY" id="afH-FR-C05"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fyg-wX-gM8" secondAttribute="trailing" id="cVg-Ta-Rht"/>
                             <constraint firstItem="KZO-XZ-zHy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="18" id="oMh-cu-gCA"/>
                             <constraint firstItem="uuh-Xk-phu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="18" id="pY7-9c-DrV"/>
