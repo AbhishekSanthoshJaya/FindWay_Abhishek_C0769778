@@ -15,6 +15,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var btnZoomIn: UIButton!
     @IBOutlet weak var btnZoomOut: UIButton!
     @IBOutlet weak var btnFindMyWay: UIButton!
+    
+    @IBOutlet weak var segmentType: UISegmentedControl!
     var locationManager = CLLocationManager()
     var aLat: CLLocationDegrees??
     var aLon: CLLocationDegrees??
@@ -76,14 +78,43 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             self.mapView.addAnnotation(annotation)
         }
     
+    @IBAction func indexChanged(_ sender: Any) {
+        routeMapping()
+
+    }
+    
     @IBAction func findMyWay(_ sender: Any) {
+        routeMapping()
+    }
+    
+    func routeMapping()
+    {
         self.mapView.removeOverlays(self.mapView.overlays)
+        
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!), addressDictionary: nil))
+        if(aLat == nil || aLon == nil)
+        {
+            let alertController = UIAlertController(title: "Error", message:
+        "No destination selected", preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+
+    self.present(alertController, animated: true, completion: nil)
+        }
+        else
+        {
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees), addressDictionary: nil))
         request.requestsAlternateRoutes = true
-        request.transportType = .automobile
-
+        }
+        switch segmentType.selectedSegmentIndex
+        {
+        case 0:
+        request.transportType = .walking
+        case 1:
+            request.transportType = .automobile
+        default:
+            break
+        }
         let directions = MKDirections(request: request)
 
         directions.calculate { [unowned self] response, error in
@@ -95,7 +126,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
         }
     }
-    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.blue

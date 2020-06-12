@@ -28,8 +28,8 @@
                                     <action selector="findMyWay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Aok-tf-oK9"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="uuh-Xk-phu">
-                                <rect key="frame" x="22" y="820" width="57.5" height="22"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="uuh-Xk-phu">
+                                <rect key="frame" x="18" y="820" width="57.5" height="22"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Urz-xO-c9F">
                                         <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -60,17 +60,31 @@
                                 <color key="textColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="y12-vY-qnb">
+                                <rect key="frame" x="138" y="816" width="135" height="32"/>
+                                <segments>
+                                    <segment title="Car"/>
+                                    <segment title="Walking"/>
+                                </segments>
+                                <connections>
+                                    <action selector="indexChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="eEi-RG-Put"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6u4-cP-RQB"/>
                             <constraint firstItem="KZO-XZ-zHy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="4" id="AAb-D1-bxg"/>
+                            <constraint firstItem="y12-vY-qnb" firstAttribute="leading" secondItem="uuh-Xk-phu" secondAttribute="trailing" constant="62.5" id="DOr-7H-TKr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uuh-Xk-phu" secondAttribute="bottom" constant="20" id="GFa-4U-3yD"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="J6g-43-QcK" secondAttribute="bottom" constant="20" id="GwJ-Xd-kUd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KZO-XZ-zHy" secondAttribute="trailing" constant="4" id="Hvg-XD-2QQ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="y12-vY-qnb" secondAttribute="bottom" constant="15" id="I7W-qN-zUg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fyg-wX-gM8" secondAttribute="bottom" id="Ny4-Ny-cKT"/>
+                            <constraint firstItem="y12-vY-qnb" firstAttribute="top" secondItem="KZO-XZ-zHy" secondAttribute="bottom" constant="728" id="UCj-IQ-LDj"/>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="top" secondItem="KZO-XZ-zHy" secondAttribute="bottom" constant="4" id="WWf-9L-g9i"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fyg-wX-gM8" secondAttribute="trailing" id="cVg-Ta-Rht"/>
+                            <constraint firstItem="J6g-43-QcK" firstAttribute="leading" secondItem="y12-vY-qnb" secondAttribute="trailing" constant="97.5" id="l3t-5h-RB7"/>
                             <constraint firstItem="KZO-XZ-zHy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="18" id="oMh-cu-gCA"/>
                             <constraint firstItem="fyg-wX-gM8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="48" id="uHC-sM-Mo1"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uuh-Xk-phu" secondAttribute="bottom" constant="20" id="z9U-7m-Rbr"/>
@@ -83,6 +97,7 @@
                         <outlet property="btnZoomIn" destination="q5r-mw-EHr" id="N8C-ht-Csc"/>
                         <outlet property="btnZoomOut" destination="Urz-xO-c9F" id="Wo9-Wn-UDZ"/>
                         <outlet property="mapView" destination="fyg-wX-gM8" id="Ncg-sH-c6m"/>
+                        <outlet property="segmentType" destination="y12-vY-qnb" id="D5O-C0-geg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
