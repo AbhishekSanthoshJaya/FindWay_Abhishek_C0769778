@@ -34,37 +34,32 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.startUpdatingLocation()
         
-        
+        //Map interactivity
         mapView.showsUserLocation = true
         mapView.isZoomEnabled = false
         
-        
+        //Added double tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         tap.numberOfTapsRequired = 2
         mapView.addGestureRecognizer(tap)
-        //Gesture to add marker
-//        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
-//        mapView.addGestureRecognizer(longTapGesture)
         
   }
     
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
         {
+            //Getting user location
             location = locations.first!
-         let coordinateRegion = MKCoordinateRegion(center: location!.coordinate, latitudinalMeters: 1000, longitudinalMeters:1000)
+            let coordinateRegion = MKCoordinateRegion(center: location!.coordinate, latitudinalMeters: 1000, longitudinalMeters:1000)
             mapView.setRegion(coordinateRegion, animated: true)
             locationManager.stopUpdatingLocation()
         }
     
         @objc func doubleTapped(sender: UIGestureRecognizer)
         {
-//        // Annotation at long press location
-//            if sender.state == .began
-//            {
-                let locationInView = sender.location(in: mapView)
-                let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
-                addAnnotation(location: locationOnMap)
-//            }
+            //Getting coordinate of double tapped point and adding annotation
+            let locationInView = sender.location(in: mapView)
+            let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
+            addAnnotation(location: locationOnMap)
         }
 
         func addAnnotation(location: CLLocationCoordinate2D)
@@ -83,14 +78,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             self.mapView.addAnnotation(annotation)
         }
     
-    @IBAction func indexChanged(_ sender: Any) {
-        routeMapping()
+            @IBAction func indexChanged(_ sender: Any) {
+                //Controlling method of transport
+                routeMapping()
 
-    }
-    
-    @IBAction func findMyWay(_ sender: Any) {
-        routeMapping()
-    }
+            }
+            
+            @IBAction func findMyWay(_ sender: Any) {
+                //Calculating route
+                routeMapping()
+            }
     
     func routeMapping()
     {
