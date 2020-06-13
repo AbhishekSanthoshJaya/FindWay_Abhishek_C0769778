@@ -79,43 +79,46 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     
             @IBAction func indexChanged(_ sender: Any) {
-                //Controlling method of transport
-                routeMapping()
+            //Controlling method of transport
+            routeMapping()
 
             }
             
             @IBAction func findMyWay(_ sender: Any) {
-                //Calculating route
-                routeMapping()
+            //Calculating route
+            routeMapping()
             }
     
     func routeMapping()
     {
-        self.mapView.removeOverlays(self.mapView.overlays)
-        
+            self.mapView.removeOverlays(self.mapView.overlays)
+            //Getting desination locations
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!), addressDictionary: nil))
+        //Handling case when no marker is placed
         if(aLat == nil || aLon == nil)
         {
-            let alertController = UIAlertController(title: "Error", message:
-        "No destination selected", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+                let alertController = UIAlertController(title: "Error", message:
+                "No destination selected", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
 
-    self.present(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
         }
         else
         {
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees), addressDictionary: nil))
-        request.requestsAlternateRoutes = false
+                //Getting destination location
+                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees), addressDictionary: nil))
+                request.requestsAlternateRoutes = false
         }
+        //Transport type based on segment selection
         switch segmentType.selectedSegmentIndex
         {
-        case 0:
-        request.transportType = .walking
-        case 1:
-            request.transportType = .automobile
-        default:
-            break
+            case 0:
+                request.transportType = .walking
+            case 1:
+                request.transportType = .automobile
+            default:
+                break
         }
         let directions = MKDirections(request: request)
 
@@ -128,6 +131,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
         }
     }
+    //Adding overlays
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.blue
