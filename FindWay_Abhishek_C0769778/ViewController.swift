@@ -75,6 +75,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             aLon = annotation.coordinate.longitude
             annotation.title = "Destination"
             annotation.subtitle = "Destination"
+        
             self.mapView.addAnnotation(annotation)
         }
     
