@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate {
     // Outlet Creation and Variables
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var btnZoomIn: UIButton!
@@ -38,11 +38,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             mapView.isZoomEnabled = false
             
             //Added double tap gesture
-            let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-            tap.numberOfTapsRequired = 2
-            mapView.addGestureRecognizer(tap)
+            addDoubleTap()
             
       }
+        func addDoubleTap()
+        {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+                   tap.numberOfTapsRequired = 2
+                   mapView.addGestureRecognizer(tap)
+        }
+    
         
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
         {
@@ -53,12 +58,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             locationManager.stopUpdatingLocation()
         }
     
-        @objc func doubleTapped(sender: UIGestureRecognizer)
+        @objc func doubleTapped(sender: UITapGestureRecognizer)
         {
-            //Getting coordinate of double tapped point and adding annotation
+           // Getting coordinate of double tapped point and adding annotation
             let locationInView = sender.location(in: mapView)
             let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
             addAnnotation(location: locationOnMap)
+            getLocationInfo()
         }
 
         func addAnnotation(location: CLLocationCoordinate2D)
@@ -74,8 +80,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             aLat = annotation.coordinate.latitude
             aLon = annotation.coordinate.longitude
             annotation.title = "Destination"
-            annotation.subtitle = "Destination"
-        
+            
             self.mapView.addAnnotation(annotation)
         }
     
@@ -166,7 +171,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return renderer
     }
     
-    //Zoom in feature
+        //Zoom in feature
         @IBAction func zoomIn(_ sender: Any)
         {
             var region: MKCoordinateRegion = mapView.region
@@ -175,7 +180,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             mapView.setRegion(region, animated: true)
         }
     
-    //Zoom out feature
+        //Zoom out feature
         @IBAction func zoomOut(_ sender: Any)
         {
             var region: MKCoordinateRegion = mapView.region
@@ -183,7 +188,60 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             region.span.longitudeDelta = min(region.span.longitudeDelta * 2.0, 180.0)
             mapView.setRegion(region, animated: true)
         }
-    
+        
+        func getLocationInfo()
+        {
+            var location = CLLocation(latitude: aLat as! CLLocationDegrees, longitude: aLon as! CLLocationDegrees) //changed!!!
+            print(location)
+
+    CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+        print(location)
+        guard error == nil else {
+            print("Reverse geocoder failed with error" + error!.localizedDescription)
+            return
+        }
+        guard placemarks!.count > 0 else {
+            print("Problem with the data received from geocoder")
+            return
+        }
+        let pm = placemarks![0] as! CLPlacemark
+        print(pm.locality!)
+        print(pm.thoroughfare!)
+        print(pm.postalCode!)
+    })
+        }
     
 }
 
+extension MapViewController: MKMapViewDelegate {
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
+        {
+            //Show nothing if loction is user's location
+            
+            if annotation is MKUserLocation {
+                return nil
+            }
+            
+            //Adding a custom pin
+            let pinAnnotation = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "droppablePin")
+            pinAnnotation.pinTintColor = UIColor.blue
+            pinAnnotation.canShowCallout = true
+            
+            //Adding custom button
+            let button = UIButton()
+            button.setImage(UIImage(named :"heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+            pinAnnotation.rightCalloutAccessoryView = button
+            
+            return pinAnnotation
+        }
+
+        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl)
+        {
+            //Alert user that he has successfully added the location
+            let alertController = UIAlertController(title: "Success", message: "Location Added to favorites", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            present(alertController, animated: true, completion: nil)
+        }
+}
