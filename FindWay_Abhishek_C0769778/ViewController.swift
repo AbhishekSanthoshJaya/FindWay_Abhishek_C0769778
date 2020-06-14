@@ -10,42 +10,40 @@ import UIKit
 import MapKit
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-
+    // Outlet Creation and Variables
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var btnZoomIn: UIButton!
     @IBOutlet weak var btnZoomOut: UIButton!
     @IBOutlet weak var btnFindMyWay: UIButton!
-    
     @IBOutlet weak var segmentType: UISegmentedControl!
     var locationManager = CLLocationManager()
     var aLat: CLLocationDegrees??
     var aLon: CLLocationDegrees??
     var location: CLLocation?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            mapView.delegate = self
+            locationManager.delegate = self
+            
+            //Permission and finding inital location
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.distanceFilter = kCLDistanceFilterNone
+            locationManager.startUpdatingLocation()
+            
+            //Map interactivity
+            mapView.showsUserLocation = true
+            mapView.isZoomEnabled = false
+            
+            //Added double tap gesture
+            let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+            tap.numberOfTapsRequired = 2
+            mapView.addGestureRecognizer(tap)
+            
+      }
         
-        mapView.delegate = self
-        locationManager.delegate = self
-        
-        //Permission and finding inital location
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.startUpdatingLocation()
-        
-        //Map interactivity
-        
-        mapView.showsUserLocation = true
-        mapView.isZoomEnabled = false
-        
-        //Added double tap gesture
-        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-        tap.numberOfTapsRequired = 2
-        mapView.addGestureRecognizer(tap)
-        
-  }
-    
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
         {
             //Getting user location
@@ -92,6 +90,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             routeMapping()
             }
     
+    func enableLocationServicesAlert()
+    {
+        //Alert when location services are not enabled
+        let alertController = UIAlertController(title: "Error", message:
+        "Please enable location services in settings", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+
+        self.present(alertController, animated: true, completion: nil)
+    }
     func routeMapping()
     {
             self.mapView.removeOverlays(self.mapView.overlays)
@@ -99,12 +106,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let request = MKDirections.Request()
         if(location?.coordinate.longitude == nil || location?.coordinate.latitude == nil)
         {
-                let alertController = UIAlertController(title: "Error", message:
-                "Please enable location services in settings", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-
-                self.present(alertController, animated: true, completion: nil)
-                return
+            enableLocationServicesAlert()
+            return
         }
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!), addressDictionary: nil))
         //Handling case when no marker is placed
@@ -148,7 +151,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 3;
+        //Polyline style for automobile route
+        if(segmentType.selectedSegmentIndex == 0)
+        {
+            renderer.lineWidth = 3;
+        }
+        //Polyline style for the on foot route
+        if(segmentType.selectedSegmentIndex == 1)
+        {
+            renderer.lineWidth = 4.0
+            renderer.lineDashPhase = 5
+            renderer.lineDashPattern = [NSNumber(value: 1),NSNumber(value:6)]
+        }
         return renderer
     }
     
