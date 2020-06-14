@@ -65,7 +65,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
         func addAnnotation(location: CLLocationCoordinate2D)
         {
-            //Removing previous annotations
+            //Removing previous annotations and route
+            self.mapView.removeOverlays(self.mapView.overlays)
             let oldAnnotations = self.mapView.annotations
             self.mapView.removeAnnotations(oldAnnotations)
             
@@ -96,8 +97,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             self.mapView.removeOverlays(self.mapView.overlays)
             //Getting desination locations
         let request = MKDirections.Request()
+        if(location?.coordinate.longitude == nil || location?.coordinate.latitude == nil)
+        {
+                let alertController = UIAlertController(title: "Error", message:
+                "Please enable location services in settings", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+
+                self.present(alertController, animated: true, completion: nil)
+                return
+        }
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: (location?.coordinate.latitude)!, longitude: (location?.coordinate.longitude)!), addressDictionary: nil))
         //Handling case when no marker is placed
+        
         if(aLat == nil || aLon == nil)
         {
                 let alertController = UIAlertController(title: "Error", message:
